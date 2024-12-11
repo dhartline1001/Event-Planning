@@ -33,3 +33,18 @@
     text-decoration: underline;
   }
   
+  .logout-btn {
+    background-color: #f6620d; /* Orange */
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-left: auto; /* Push it to the right */
+  }
+  
+  .logout-btn:hover {
+    background-color: #e0550b; /* Slightly darker on hover */
+  }
+  

@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import "./CreateEventPage.css";
 import { EventContext } from "../../context/EventContext";
+import axios from "axios";
 
 const CreateEventPage = () => {
   const [formData, setFormData] = useState({
@@ -23,17 +24,60 @@ const CreateEventPage = () => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setFormData({ ...formData, image: imageUrl });
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFormData({ ...formData, image: reader.result }); // Store Base64 string
+      };
+      reader.readAsDataURL(file);
     }
   };
+  
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const newEvent = { ...formData, id: Date.now() }; // Add unique ID
-    addEvent(newEvent); // Add to global context
-    alert("Event created successfully!");
+  
+    try {
+      // Retrieve token from localStorage
+      const token = localStorage.getItem("token");
+      if (!token) {
+        alert("Please log in to create an event");
+        return;
+      }
+  
+      const formDataToSend = {
+        title: formData.title,
+        description: formData.description,
+        date: formData.date,
+        location: formData.location,
+        capacity: formData.capacity || 0,
+        ticketCost: formData.ticketCost || 0,
+        image: formData.image,
+      };
+  
+      const response = await axios.post("http://localhost:5000/api/events", formDataToSend, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      alert(response.data.message);
+      console.log("Event Created:", response.data.event);
+  
+      setFormData({
+        title: "",
+        description: "",
+        date: "",
+        location: "",
+        capacity: "",
+        ticketCost: "",
+        image: null,
+      });
+    } catch (error) {
+      console.error("Error creating event:", error.response?.data?.message || "Server error");
+      alert("Error creating event. Please try again.");
+    }
   };
+  
 
   return (
     <div className="create-event-container">

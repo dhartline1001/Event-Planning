@@ -1,0 +1,47 @@
+.auth-container {
+  width: 300px;
+  margin: 50px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  text-align: center;
+  background-color: #f9f9f9;
+}
+
+.auth-form label {
+  display: block;
+  margin: 10px 0;
+  text-align: left;
+}
+
+.auth-form input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+}
+
+.submit-btn,
+.toggle-btn {
+  margin-top: 15px;
+  padding: 8px 15px;
+  cursor: pointer;
+  border: none;
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 4px;
+}
+
+.toggle-btn {
+  background-color: transparent;
+  color: #007bff;
+  text-decoration: underline;
+}
+
+.submit-btn:hover,
+.toggle-btn:hover {
+  opacity: 0.8;
+}
+
+.auth-toggle {
+  margin-top: 15px;
+}

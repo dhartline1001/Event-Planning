@@ -1,63 +1,133 @@
+/* src/components/MyTicketsPage.css */
+
 .my-tickets-container {
-  max-width: 800px;
-  margin: 0 auto;
   padding: 20px;
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .my-tickets-container h1 {
   text-align: center;
   color: #333;
-  font-size: 28px;
+  margin-bottom: 30px;
+}
+
+.my-tickets-error-message {
+  color: red;
+  text-align: center;
   margin-bottom: 20px;
+  font-weight: bold;
 }
 
-.ticket-list {
+.my-tickets-section {
+  margin-bottom: 40px;
+}
+
+.my-tickets-section h2 {
+  border-bottom: 2px solid black;
+  padding-bottom: 5px;
+  margin-bottom: 20px;
+  color: black;
+}
+
+.my-tickets-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Responsive grid with min 250px */
+  gap: 20px; /* Space between cards */
+  padding: 20px; /* Padding around the grid */
 }
 
-.ticket-card {
+.my-tickets-card {
+  height: width;
+  position: relative; /* To allow absolute positioning of price */
   background-color: #ffffff;
-  padding: 15px;
   border: 1px solid #ddd;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.ticket-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.ticket-card h2 {
-  font-size: 20px;
-  color: #f6620d;
-  margin-bottom: 10px;
-}
-
-.ticket-card p {
-  font-size: 16px;
-  color: #555;
-  margin: 5px 0;
-}
-
-.delete-btn {
-  background-color: #ff4d4d;
-  color: white;
-  padding: 8px 16px;
-  border: none;
-  border-radius: 4px;
-  font-size: 14px;
+  aspect-ratio: 1 / 1; /* Enforce square shape */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   cursor: pointer;
-  margin-top: 10px;
+  overflow: hidden; /* Prevent overflow content */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.delete-btn:hover {
-  background-color: #ff1a1a;
+.my-tickets-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.my-tickets-card img {
+  width: 100%;
+  height: 60%; /* Fixed height for the image */
+  object-fit: cover; /* Crop and fit the image */
+}
+
+.my-tickets-price-overlay {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: rgba(246, 98, 13, 0.9); /* Orange with opacity */
+  color: white;
+  padding: 5px 8px;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.my-tickets-card h2 {
+  font-size: 16px;
+  color: #f6620d;
+  margin: 10px 10px 5px;
+  text-align: center;
+}
+
+.my-tickets-card p {
+  font-size: 12px;
+  color: #555;
+  margin: 5px 10px;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Add ellipsis for long text */
+  white-space: nowrap; /* Prevent wrapping */
+}
+
+.my-tickets-delete-btn {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 10px;
+  align-self: center;
+}
+
+.my-tickets-delete-btn:hover {
+  background-color: #c82333;
+}
+
+.past-ticket {
+  background-color: #f9f9f9; /* Light gray background for past tickets */
+}
+
+.past-ticket .my-tickets-price-overlay {
+  background-color: rgba(88, 88, 88, 0.9); /* Dark gray for past events */
+}
+
+.past-ticket h2 {
+  color: #555; /* Darker title color for past events */
+}
+
+/* Optional: Spinner for loading state */
+.spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border-left-color: #f6620d;
+  animation: spin 1s linear infinite;
+  margin: 20px auto;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }

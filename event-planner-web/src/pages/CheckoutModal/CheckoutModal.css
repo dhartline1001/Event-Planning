@@ -1,62 +1,221 @@
+/* Modal Overlay */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.5); /* Dark transparent background */
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   z-index: 1000;
+  backdrop-filter: blur(5px); /* Adds a nice blur effect */
 }
 
+/* Modal Content */
 .modal-content {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  width: 400px;
+  background: #fff;
+  border-radius: 12px;
+  width: 450px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  animation: fadeIn 0.4s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
 }
 
-.modal-content h2 {
-  margin-bottom: 20px;
+/* Animation for modal */
+@keyframes fadeIn {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Step Container */
+.checkout-step {
+  width: 100%;
+  padding: 20px;
+  animation: slideIn 0.3s ease;
+}
+
+/* Slide-in Animation */
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Header */
+.checkout-step h2 {
+  font-size: 1.8rem;
+  margin-bottom: 15px;
   color: #333;
+  font-weight: 600;
 }
 
-.modal-content p {
-  font-size: 16px;
-  color: #555;
-  margin: 10px 0;
+/* Labels and Inputs */
+label {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+  text-align: left;
+  font-size: 14px;
+  color: #444;
+  font-weight: 500;
 }
 
-.checkout-btn {
+input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-top: 5px;
+  font-size: 14px;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
+
+input:focus {
+  border-color: #f6620d;
+  outline: none;
+  box-shadow: 0 0 5px rgba(246, 98, 13, 0.5);
+}
+
+/* Buttons */
+.next-btn,
+.back-btn,
+.checkout-btn,
+.close-btn {
   background-color: #f6620d;
-  color: white;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
   padding: 10px 20px;
   border: none;
-  border-radius: 4px;
-  font-size: 16px;
+  border-radius: 6px;
   cursor: pointer;
-  margin-right: 10px;
+  margin: 10px 5px;
+  transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
-.checkout-btn:hover {
+.next-btn:hover,
+.back-btn:hover,
+.checkout-btn:hover,
+.close-btn:hover {
   background-color: #f5760d;
+  transform: scale(1.05);
 }
 
 .close-btn {
-  background-color: #ccc;
-  color: black;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  font-size: 16px;
-  cursor: pointer;
+  background-color: #ddd;
+  color: #333;
 }
 
 .close-btn:hover {
-  background-color: #bbb;
+  background-color: #ccc;
 }
-  
+
+/* Summary Content */
+.summary {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 10px;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.summary p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #333;
+  text-align: left;
+}
+
+/* Card Info */
+.card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Step Indicators */
+.step-indicator {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+.step-circle {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin: 0 5px;
+  background-color: #ddd;
+}
+
+.step-circle.active {
+  background-color: #f6620d;
+}
+
+/* Loading Spinner */
+.spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-left-color: #f6620d;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+  margin: 20px auto;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Checkmark Animation */
+.checkmark {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #4caf50;
+  position: relative;
+  margin: 20px auto;
+}
+
+.checkmark::after {
+  content: "";
+  position: absolute;
+  left: 20px;
+  top: 10px;
+  width: 15px;
+  height: 30px;
+  border: solid white;
+  border-width: 0 5px 5px 0;
+  transform: rotate(45deg);
+}
+
+.loading-step,
+.success-step {
+  text-align: center;
+}
+
+.success-step p {
+  font-size: 18px;
+  color: #4caf50;
+  margin-top: 10px;
+}
