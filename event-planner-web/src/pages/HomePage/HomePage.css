@@ -78,4 +78,24 @@ h1 {
   overflow: hidden;
   text-overflow: ellipsis; /* Add ellipsis for long text */
   white-space: nowrap; /* Prevent wrapping */
+
+  .search-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0;
+  }
+  
+  .search-input {
+    display: block;
+    margin: 10px auto; /* Center the input */
+    width: 50%; /* Shorter width */
+    max-width: 300px; /* Limit the width for larger screens */
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  
 }

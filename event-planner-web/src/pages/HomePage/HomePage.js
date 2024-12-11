@@ -7,6 +7,7 @@ const HomePage = () => {
   const navigate = useNavigate();
   const [events, setEvents] = useState([]); // Local state for events
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState(""); // State for the search bar input
 
   // Fetch events from backend
   useEffect(() => {
@@ -25,16 +26,36 @@ const HomePage = () => {
     fetchEvents();
   }, []);
 
+  // Event click handler
   const handleEventClick = (event) => {
-    navigate(`/event-preview/${event._id}`); // Pass event ID in the URL
+    navigate(`/event-preview/${event._id}`); // Navigate to the event preview page
   };
-  
+
+  // Search handler
+  const handleSearch = (query) => {
+    const filteredEvents = events.filter((event) =>
+      event.title.toLowerCase().includes(query.toLowerCase())
+    );
+    setEvents(filteredEvents); // Update events with the filtered results
+  };
 
   return (
     <div className="home-container">
       <div className="scrolling-bar">
         <p>🎉 Check out the hottest events of the season!</p>
       </div>
+
+      {/* Search Bar */}
+      <input
+        className="search-input"
+        type="text"
+        placeholder="Search for events..."
+        value={searchQuery}
+        onChange={(e) => {
+          setSearchQuery(e.target.value);
+          handleSearch(e.target.value); // Search dynamically on input
+        }}
+      />
 
       <h1>Current Events</h1>
       {loading ? (
