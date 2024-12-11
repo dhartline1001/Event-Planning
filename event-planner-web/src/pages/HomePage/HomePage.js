@@ -49,6 +49,11 @@ const HomePage = () => {
     }
   };
 
+  // Search button click handler
+  const handleSearchButtonClick = () => {
+    handleSearch(searchQuery); // Trigger the search when the button is clicked
+  };
+
   return (
     <div className="home-container">
       <div className="scrolling-bar">
@@ -65,7 +70,12 @@ const HomePage = () => {
           onChange={(e) => setSearchQuery(e.target.value)} // Update search query as user types
           onKeyDown={handleKeyDown} // Trigger search on Enter key press
         />
+        {/* Search Button with Image */}
+        <button className="search-button" onClick={() => handleSearch(searchQuery)}>
+          <img src="/search.png" alt="Search" className="search-icon" />
+        </button>
       </div>
+
 
       {loading ? (
         <p>Loading events...</p>
