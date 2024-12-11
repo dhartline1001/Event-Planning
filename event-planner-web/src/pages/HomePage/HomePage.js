@@ -1,26 +1,34 @@
-import React, { useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import "./HomePage.css";
-import { EventContext } from "../../context/EventContext";
-import { TicketContext } from "../../context/TicketContext";
 
 const HomePage = () => {
   const navigate = useNavigate();
-  const { events } = useContext(EventContext); // Fetch events from context
-  const { addTicket } = useContext(TicketContext);
+  const [events, setEvents] = useState([]); // Local state for events
+  const [loading, setLoading] = useState(true);
+
+  // Fetch events from backend
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/events");
+        setEvents(response.data.events);
+      } catch (error) {
+        console.error("Error fetching events:", error);
+        alert("Failed to load events.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEvents();
+  }, []);
 
   const handleEventClick = (event) => {
-    navigate(`/event-preview/${event.id}`, { state: event });
+    navigate(`/event-preview/${event._id}`); // Pass event ID in the URL
   };
-
-  const handleAddTicket = (event) => {
-    addTicket(event);
-    alert(
-      event.ticketCost > 0
-        ? `You have paid $${event.ticketCost} for ${event.title}.`
-        : `You have successfully added your ticket for ${event.title}.`
-    );
-  };
+  
 
   return (
     <div className="home-container">
@@ -29,22 +37,26 @@ const HomePage = () => {
       </div>
 
       <h1>Current Events</h1>
-      {events.length > 0 ? (
+      {loading ? (
+        <p>Loading events...</p>
+      ) : events.length > 0 ? (
         <div className="event-list">
           {events.map((event) => (
-            <div key={event.id} className="event-card">
-              {event.image && <img src={event.image} alt={event.title} className="event-image" />}
+            <div
+              key={event._id}
+              className="event-card"
+              onClick={() => handleEventClick(event)}
+            >
+              {event.image && (
+                <>
+                  <img src={event.image} alt={event.title} />
+                  <div className="price-overlay">
+                    {event.ticketCost > 0 ? `$${event.ticketCost}` : "Free"}
+                  </div>
+                </>
+              )}
               <h2>{event.title}</h2>
               <p>{event.description}</p>
-              <p><strong>Date:</strong> {event.date}</p>
-              <p><strong>Location:</strong> {event.location}</p>
-              <p><strong>Cost:</strong> {event.ticketCost > 0 ? `$${event.ticketCost}` : "Free"}</p>
-              <button className="pay-add-btn" onClick={() => handleAddTicket(event)}>
-                {event.ticketCost > 0 ? `Pay $${event.ticketCost}` : "Add Ticket"}
-              </button>
-              <button className="view-details-btn" onClick={() => handleEventClick(event)}>
-                View Details
-              </button>
             </div>
           ))}
         </div>
