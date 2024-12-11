@@ -79,23 +79,27 @@ h1 {
   text-overflow: ellipsis; /* Add ellipsis for long text */
   white-space: nowrap; /* Prevent wrapping */
 
-  .search-bar {
+  .search-bar-container {
     display: flex;
     justify-content: center;
-    align-items: center;
-    margin: 10px 0;
+    margin-bottom: 20px;
   }
   
   .search-input {
-    display: block;
-    margin: 10px auto; /* Center the input */
-    width: 50%; /* Shorter width */
-    max-width: 300px; /* Limit the width for larger screens */
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 14px;
+    padding: 8px 20px;
+    font-size: 16px;
+    width: 250px;
+    border-radius: 25px;
+    border: 2px solid #ccc;
   }
+  
+  .search-input:focus {
+    outline: none;
+    border-color: #999; /* Optional: Change border color on focus */
+  }
+  
+  
+  
   
   
 }

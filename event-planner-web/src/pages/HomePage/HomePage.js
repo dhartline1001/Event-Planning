@@ -5,7 +5,8 @@ import "./HomePage.css";
 
 const HomePage = () => {
   const navigate = useNavigate();
-  const [events, setEvents] = useState([]); // Local state for events
+  const [events, setEvents] = useState([]); // Local state for all events
+  const [filteredEvents, setFilteredEvents] = useState([]); // State for filtered events based on search
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState(""); // State for the search bar input
 
@@ -15,6 +16,7 @@ const HomePage = () => {
       try {
         const response = await axios.get("http://localhost:5000/api/events");
         setEvents(response.data.events);
+        setFilteredEvents(response.data.events); // Initially set filtered events to all events
       } catch (error) {
         console.error("Error fetching events:", error);
         alert("Failed to load events.");
@@ -33,36 +35,43 @@ const HomePage = () => {
 
   // Search handler
   const handleSearch = (query) => {
-    const filteredEvents = events.filter((event) =>
-      event.title.toLowerCase().includes(query.toLowerCase())
+    const filtered = events.filter((event) =>
+      event.title.toLowerCase().includes(query.toLowerCase()) ||
+      event.description.toLowerCase().includes(query.toLowerCase())
     );
-    setEvents(filteredEvents); // Update events with the filtered results
+    setFilteredEvents(filtered); // Update filtered events with the results
+  };
+
+  // Keydown handler to trigger search on "Enter"
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      handleSearch(searchQuery); // Search only when Enter is pressed
+    }
   };
 
   return (
     <div className="home-container">
       <div className="scrolling-bar">
-        <p>🎉 Check out the hottest events of the season!</p>
+        <p>🎉 Check out the hottest events of the season! 🎉</p>
       </div>
 
-      {/* Search Bar */}
-      <input
-        className="search-input"
-        type="text"
-        placeholder="Search for events..."
-        value={searchQuery}
-        onChange={(e) => {
-          setSearchQuery(e.target.value);
-          handleSearch(e.target.value); // Search dynamically on input
-        }}
-      />
+      <div className="search-bar-container">
+        {/* Search Bar */}
+        <input
+          className="search-input"
+          type="text"
+          placeholder="Search for events..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)} // Update search query as user types
+          onKeyDown={handleKeyDown} // Trigger search on Enter key press
+        />
+      </div>
 
-      <h1>Current Events</h1>
       {loading ? (
         <p>Loading events...</p>
-      ) : events.length > 0 ? (
+      ) : filteredEvents.length > 0 ? (
         <div className="event-list">
-          {events.map((event) => (
+          {filteredEvents.map((event) => (
             <div
               key={event._id}
               className="event-card"
