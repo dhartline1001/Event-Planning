@@ -31,10 +31,9 @@ const AuthPage = () => {
 
     try {
       const hashedPassword = hashPassword(formData.email, formData.password);
-
       if (isLogin) {
         // Login Logic
-        const response = await axios.post("http://localhost:5000/api/login", {
+        const response = await axios.post(process.env.REACT_APP_BACKEND_URL + "/api/login", {
           email: formData.email,
           password: hashedPassword, // Send hash
         });
@@ -42,7 +41,7 @@ const AuthPage = () => {
         localStorage.setItem("token", response.data.token);
       } else {
         // Signup Logic
-        const response = await axios.post("http://localhost:5000/api/signup", {
+        const response = await axios.post(process.env.REACT_APP_BACKEND_URL + "/api/signup", {
           name: formData.name,
           email: formData.email,
           password: hashedPassword, // Send hash

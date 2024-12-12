@@ -74,7 +74,7 @@ const CheckoutModal = ({ event, onClose }) => {
 
       // Create the ticket by calling the backend API
       const response = await axios.post(
-        "http://localhost:5000/api/tickets",
+        process.env.REACT_APP_BACKEND_URL + "/api/tickets",
         { eventId: event._id, quantity }, // Send selected quantity
         {
           headers: {

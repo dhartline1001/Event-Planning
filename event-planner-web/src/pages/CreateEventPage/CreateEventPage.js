@@ -54,7 +54,7 @@ const CreateEventPage = () => {
         image: formData.image,
       };
   
-      const response = await axios.post("http://localhost:5000/api/events", formDataToSend, {
+      const response = await axios.post(process.env.REACT_APP_BACKEND_URL + "/api/events", formDataToSend, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

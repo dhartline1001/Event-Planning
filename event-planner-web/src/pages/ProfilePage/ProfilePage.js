@@ -20,7 +20,7 @@ const ProfilePage = () => {
           return;
         }
 
-        const response = await axios.get("http://localhost:5000/api/user", {
+        const response = await axios.get(process.env.REACT_APP_BACKEND_URL + "/api/user", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
