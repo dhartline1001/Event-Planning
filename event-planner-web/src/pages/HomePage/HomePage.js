@@ -14,9 +14,20 @@ const HomePage = () => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await axios.get(process.env.REACT_APP_BACKEND_URL + "/api/events");
-        setEvents(response.data.events);
-        setFilteredEvents(response.data.events); // Initially set filtered events to all events
+        const backendUrl = process.env.REACT_APP_BACKEND_URL;
+        if (!backendUrl) {
+          throw new Error("REACT_APP_BACKEND_URL is not defined");
+        }
+
+        const response = await axios.get(`${backendUrl}/api/events`);
+        console.log("Fetched events:", response.data.events);
+
+        if (response.data && Array.isArray(response.data.events)) {
+          setEvents(response.data.events);
+          setFilteredEvents(response.data.events); // Initially set filtered events to all events
+        } else {
+          throw new Error("Invalid response structure");
+        }
       } catch (error) {
         console.error("Error fetching events:", error);
         alert("Failed to load events.");
@@ -30,7 +41,12 @@ const HomePage = () => {
 
   // Event click handler
   const handleEventClick = (event) => {
-    navigate(`/event-preview/${event._id}`); // Navigate to the event preview page
+    if (event && event._id) {
+      navigate(`/event-preview/${event._id}`); // Navigate to the event preview page
+    } else {
+      console.error("Invalid event data:", event);
+      alert("Invalid event data.");
+    }
   };
 
   // Search handler
@@ -72,34 +88,36 @@ const HomePage = () => {
           onKeyDown={handleKeyDown} // Trigger search on Enter key press
         />
         {/* Search Button with Image */}
-        <button className="search-button" onClick={() => handleSearch(searchQuery)}>
+        <button className="search-button" onClick={handleSearchButtonClick}>
           <img src="/search.png" alt="Search" className="search-icon" />
         </button>
       </div>
 
-
       {loading ? (
-        <p>Loading events...</p>
+        <div className="spinner"></div>
       ) : filteredEvents.length > 0 ? (
         <div className="event-list">
-          {filteredEvents.map((event) => (
-            <div
-              key={event._id}
-              className="event-card"
-              onClick={() => handleEventClick(event)}
-            >
-              {event.image && (
-                <>
-                  <img src={event.image} alt={event.title} />
-                  <div className="price-overlay">
-                    {event.ticketCost > 0 ? `$${event.ticketCost}` : "Free"}
-                  </div>
-                </>
-              )}
-              <h2>{event.title}</h2>
-              <p>{event.description}</p>
-            </div>
-          ))}
+          {filteredEvents.map((event) => {
+            console.log("Rendering event:", event);
+            return (
+              <div
+                key={event._id}
+                className="event-card"
+                onClick={() => handleEventClick(event)}
+              >
+                {event.image && (
+                  <>
+                    <img src={event.image} alt={event.title} />
+                    <div className="price-overlay">
+                      {event.ticketCost > 0 ? `$${event.ticketCost}` : "Free"}
+                    </div>
+                  </>
+                )}
+                <h2>{event.title}</h2>
+                <p>{event.description}</p>
+              </div>
+            );
+          })}
         </div>
       ) : (
         <p>No events available. Create one!</p>
