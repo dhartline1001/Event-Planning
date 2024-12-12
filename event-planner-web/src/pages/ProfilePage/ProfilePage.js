@@ -1,37 +1,73 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import "./ProfilePage.css";
 
-function ProfilePage() {
-  // Sample user profile state (replace this with actual API data later)
-  const [profile, setProfile] = useState({
-    name: "John Doe",
-    profilePicture: "https://via.placeholder.com/150", // Replace with actual image URL
-    bio: "Hello! I'm a passionate event organizer who loves connecting people.",
-  });
+const ProfilePage = () => {
+  const navigate = useNavigate();
+  const [profile, setProfile] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  const handleEdit = () => {
-    alert("Edit profile functionality coming soon!"); // Placeholder for edit functionality
-  };
+  // Fetch user data from backend
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          setError("You must be logged in to view your profile.");
+          setLoading(false);
+          return;
+        }
+
+        const response = await axios.get("http://localhost:5000/api/user", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        setProfile(response.data.user);
+        console.log("Fetched Profile:", response.data.user); // For debugging
+      } catch (error) {
+        console.error("Error fetching profile data:", error);
+        setError("Failed to load profile data. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProfileData();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="profile-container">
+        <h1>Loading Profile...</h1>
+      </div>
+    );
+  }
 
   return (
-    <div className="profile-page">
-      <div className="profile-header">
-        <img
-          src={profile.profilePicture}
-          alt={`${profile.name}'s profile`}
-          className="profile-picture"
-        />
-        <h1>{profile.name}</h1>
-      </div>
-      <div className="profile-bio">
-        <h2>Bio</h2>
-        <p>{profile.bio}</p>
-      </div>
-      <button className="edit-profile-btn" onClick={handleEdit}>
-        Edit Profile
-      </button>
+    <div className="profile-page">  {/* Container for entire page */}
+      {error && <p className="profile-error-message">{error}</p>}
+
+      {profile && (
+        <>
+          <div className="profile-content"> {/* Centered content container */}
+            <div className="profile-info">
+              <img src={profile.picture || "https://via.placeholder.com/150"} alt={`${profile.name}'s profile`} className="profile-picture" />
+              <h2>{profile.name}</h2>
+              <p>{profile.bio}</p>
+            </div>
+
+            <button className="view-tickets-btn" onClick={() => navigate("/my-tickets")}>
+              View Your Tickets
+            </button>
+          </div>
+        </>
+      )}
     </div>
   );
-}
+};
 
 export default ProfilePage;

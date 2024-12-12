@@ -1,9 +1,16 @@
 .profile-page {
-  max-width: 600px;
-  margin: 0 auto;
-  text-align: center;
-  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
+.profile-content {
+  display: flex; /* Make the content container a flexbox */
+  flex-direction: column; /* Stack elements vertically */
+  align-items: center; /* Center elements horizontally */
+}
+
+/* Other styles remain the same */
 
 .profile-header {
   display: flex;
@@ -13,6 +20,7 @@
 }
 
 .profile-picture {
+  margin-top: 100px;
   width: 150px;
   height: 150px;
   border-radius: 50%;
@@ -29,6 +37,7 @@
   font-size: 20px;
   color: #333;
   margin-bottom: 10px;
+  align-items: center;
 }
 
 .profile-bio p {
@@ -36,7 +45,7 @@
   color: #555;
 }
 
-.edit-profile-btn {
+.view-tickets-btn {
   background-color: #f6620d;
   color: white;
   border: none;
@@ -44,8 +53,9 @@
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
+  margin-top: 10px;
 }
 
-.edit-profile-btn:hover {
+.view-tickets-btn:hover {
   background-color: #e0550c;
 }

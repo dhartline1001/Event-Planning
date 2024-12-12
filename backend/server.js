@@ -126,6 +126,25 @@ app.get("/api/events/:id", async (req, res) => {
   }
 });
 
+app.get("/api/user", authMiddleware, async (req, res) => {
+  try {
+    const userId = req.userId; // Extracted from token by authMiddleware
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Return user information (exclude sensitive data like password)
+    const userInfo = { id: user._id, name: user.name, email: user.email };
+
+    res.status(200).json({ user: userInfo });
+  } catch (error) {
+    console.error("Error fetching user information:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 // Ticket Routes
 const ticketRoutes = require("./routes/tickets"); // Ensure the path is correct
 app.use("/api/tickets", ticketRoutes);
