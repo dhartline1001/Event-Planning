@@ -37,7 +37,8 @@ const HomePage = () => {
   const handleSearch = (query) => {
     const filtered = events.filter((event) =>
       event.title.toLowerCase().includes(query.toLowerCase()) ||
-      event.description.toLowerCase().includes(query.toLowerCase())
+      event.description.toLowerCase().includes(query.toLowerCase()) ||
+      event.location.toLowerCase().includes(query.toLowerCase())
     );
     setFilteredEvents(filtered); // Update filtered events with the results
   };
