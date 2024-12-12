@@ -1,5 +1,3 @@
-// app.js or server.js
-
 const express = require("express");
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
@@ -19,7 +17,7 @@ mongoose
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.error("MongoDB connection error:", err));
 
-const Event = require("./models/Event"); // Adjust the path if necessary
+const Event = require("./models/Event");
 
 // User Schema
 const userSchema = new mongoose.Schema({
@@ -33,7 +31,6 @@ const User = mongoose.model("User", userSchema);
 // Signup Route
 app.post("/api/signup", async (req, res) => {
   const { name, email, password } = req.body;
-
   try {
     const existingUser = await User.findOne({ email });
     if (existingUser)
@@ -50,7 +47,6 @@ app.post("/api/signup", async (req, res) => {
 // Login Route
 app.post("/api/login", async (req, res) => {
   const { email, password } = req.body;
-
   try {
     const user = await User.findOne({ email });
     if (!user)
@@ -60,16 +56,14 @@ app.post("/api/login", async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    // Generate JWT Token with userId
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
 
     res.json({
       message: "Login successful!",
-      token, // Send token to client
+      token,
       user: { id: user._id, name: user.name, email: user.email },
     });
   } catch (error) {
-    console.error("Login Error:", error);
     res.status(500).json({ message: "Server error", error });
   }
 });
@@ -77,13 +71,12 @@ app.post("/api/login", async (req, res) => {
 // Auth Middleware
 const authMiddleware = require("./authMiddleware");
 
-// Create Event Route
+// Events Routes
 app.post("/api/events", authMiddleware, async (req, res) => {
   const { title, description, date, location, capacity, ticketCost, image } = req.body;
-
   try {
     const newEvent = new Event({
-      userId: req.userId, // Extracted from token
+      userId: req.userId,
       title,
       description,
       date,
@@ -92,63 +85,45 @@ app.post("/api/events", authMiddleware, async (req, res) => {
       ticketCost,
       image,
     });
-
     await newEvent.save();
-    res.status(201).json({ message: "Event created successfully!", event: newEvent });
+    res.status(201).json({ message: "Event created successfully", event: newEvent });
   } catch (error) {
-    console.error("Error creating event:", error);
     res.status(500).json({ message: "Server error", error });
   }
 });
 
-// GET: Fetch All Events
 app.get("/api/events", async (req, res) => {
   try {
     const events = await Event.find();
     res.status(200).json({ events });
   } catch (error) {
-    console.error("Error fetching events:", error);
     res.status(500).json({ message: "Server error", error });
   }
 });
 
-// GET /api/events/:id - Fetch a single event by ID
 app.get("/api/events/:id", async (req, res) => {
   try {
     const event = await Event.findById(req.params.id);
-    if (!event) {
-      return res.status(404).json({ message: "Event not found" });
-    }
+    if (!event) return res.status(404).json({ message: "Event not found" });
     res.status(200).json({ event });
   } catch (error) {
-    console.error("Error fetching event:", error);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: "Server error", error });
   }
 });
 
 app.get("/api/user", authMiddleware, async (req, res) => {
   try {
-    const userId = req.userId; // Extracted from token by authMiddleware
-
-    const user = await User.findById(userId);
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    // Return user information (exclude sensitive data like password)
-    const userInfo = { id: user._id, name: user.name, email: user.email };
-
-    res.status(200).json({ user: userInfo });
+    const user = await User.findById(req.userId);
+    if (!user) return res.status(404).json({ message: "User not found" });
+    res.status(200).json({ user: { id: user._id, name: user.name, email: user.email } });
   } catch (error) {
-    console.error("Error fetching user information:", error);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: "Server error", error });
   }
 });
 
 // Ticket Routes
-const ticketRoutes = require("./routes/tickets"); // Ensure the path is correct
+const ticketRoutes = require("./routes/tickets");
 app.use("/api/tickets", ticketRoutes);
 
-// Start the Server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+// Export the app for Vercel
+module.exports = app;
