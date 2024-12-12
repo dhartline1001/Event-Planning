@@ -1,6 +1,6 @@
 {
   "name": "event-planner-web",
-  "homepage": "https://event-planning-client.vercel.app/",
+  "homepage": "https://event-planning-client.vercel.app/home",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
