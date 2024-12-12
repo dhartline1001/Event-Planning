@@ -17,7 +17,7 @@ function Navbar() {
     <nav className="navbar">
       <ul className="navbar-links">
         <li>
-          <Link to="/home"> <img src="/event-logo.png" alt="Event Logo" /></Link>
+          <Link to="/"><img src="/event-logo.png" alt="Event Logo" /></Link>
         </li>
         {!isLoggedIn && (
           <li>
