@@ -22,12 +22,12 @@ const EventPreviewPage = () => {
         const token = localStorage.getItem("token");
 
         // Fetch event details
-        const eventResponse = await axios.get(`http://localhost:5000/api/events/${eventId}`);
+        const eventResponse = await axios.get(process.env.REACT_APP_BACKEND_URL + `/api/events/${eventId}`);
         setEvent(eventResponse.data.event);
 
         // If user is authenticated, fetch ticket count for this event
         if (token) {
-          const ticketsResponse = await axios.get(`http://localhost:5000/api/tickets/${eventId}`, {
+          const ticketsResponse = await axios.get(process.env.REACT_APP_BACKEND_URL + `/api/tickets/${eventId}`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },

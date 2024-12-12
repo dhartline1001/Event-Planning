@@ -22,7 +22,7 @@ const MyTicketsPage = () => {
           return;
         }
 
-        const response = await axios.get("http://localhost:5000/api/tickets", {
+        const response = await axios.get(process.env.REACT_APP_BACKEND_URL + "/api/tickets", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -52,7 +52,7 @@ const MyTicketsPage = () => {
         return;
       }
 
-      await axios.delete(`http://localhost:5000/api/tickets/${ticketId}`, {
+      await axios.delete(process.env.REACT_APP_BACKEND_URL + `/api/tickets/${ticketId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
