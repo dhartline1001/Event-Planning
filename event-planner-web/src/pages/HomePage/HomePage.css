@@ -1,42 +1,69 @@
 .home-container {
   padding: 20px;
+  background-color: #fff; /* White background for cleaner look */
+  font-family: 'Arial', sans-serif; /* Modern, clean font */
 }
 
 .scrolling-bar {
-  background-color: #f6620d;
+  background-color: #FD7E14; /* Orange background */
   color: white;
   text-align: center;
-  padding: 10px 0;
-  font-size: 18px;
+  padding: 15px 0;
+  font-size: 20px;
   font-weight: bold;
   position: sticky;
   top: 0;
   z-index: 10;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
 }
 
 h1 {
   text-align: center;
-  color: #333;
+  color: #FD7E14; /* Orange color for header */
   margin-top: 20px;
 }
 
 .event-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive grid */
-  gap: 20px; /* Space between cards */
-  padding: 20px; /* Padding around the grid */
+  grid-template-columns: repeat(5, 1fr); /* 5 items per row */
+  gap: 20px;
+  padding: 20px;
+}
+
+@media (max-width: 1200px) {
+  .event-list {
+    grid-template-columns: repeat(4, 1fr); /* 4 items per row for medium screens */
+  }
+}
+
+@media (max-width: 900px) {
+  .event-list {
+    grid-template-columns: repeat(3, 1fr); /* 3 items per row for smaller screens */
+  }
+}
+
+@media (max-width: 600px) {
+  .event-list {
+    grid-template-columns: repeat(2, 1fr); /* 2 items per row for small screens */
+  }
+}
+
+@media (max-width: 400px) {
+  .event-list {
+    grid-template-columns: 1fr; /* 1 item per row for extra small screens */
+  }
 }
 
 .event-card {
-  height: width;
-  position: relative; /* To allow absolute positioning of price */
+  height: 100%; /* Ensure height adjusts with content */
+  position: relative;
   background-color: #ffffff;
   border: 1px solid #ddd;
   border-radius: 8px;
   aspect-ratio: 1 / 1; /* Enforce square shape */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   cursor: pointer;
-  overflow: hidden; /* Prevent overflow content */
+  overflow: hidden;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -47,8 +74,8 @@ h1 {
 
 .event-card img {
   width: 100%;
-  height: 60%; /* Fixed height for the image */
-  object-fit: cover; /* Crop and fit the image */
+  height: 60%; /* Image height remains fixed */
+  object-fit: cover; /* Ensures image is cropped to fit */
 }
 
 .event-card .price-overlay {
@@ -65,7 +92,7 @@ h1 {
 
 .event-card h2 {
   font-size: 16px;
-  color: #f6620d;
+  color: #FD7E14;
   margin: 10px 10px 5px;
   text-align: center;
 }
@@ -76,6 +103,56 @@ h1 {
   margin: 5px 10px 10px;
   text-align: center;
   overflow: hidden;
-  text-overflow: ellipsis; /* Add ellipsis for long text */
-  white-space: nowrap; /* Prevent wrapping */
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.search-bar-container {
+  display: flex;
+  justify-content: center;
+  align-items: center; /* Center align the search input and button */
+  margin-bottom: 20px;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.search-input {
+  padding: 10px 20px;
+  font-size: 16px;
+  width: 600px;
+  border-radius: 30px;
+  border: 2px solid #FD7E14; /* Orange border */
+  background-color: #fff;
+  color: #333;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  transition: border 0.3s ease;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #ff9d4d; /* Lighter orange on focus */
+}
+
+.search-input::placeholder {
+  color: #888;
+  font-style: italic;
+}
+
+.search-button {
+  background-color: transparent; /* No background for image button */
+  border: none;
+  padding: 5px;
+  cursor: pointer;
+  margin-left: 5px;
+  margin-top: 10px;
+  transition: opacity 0.3s ease;
+}
+
+.search-button:hover {
+  opacity: 0.8; /* Slight opacity change on hover */
+}
+
+.search-icon {
+  width: 50px; /* Adjust the size of the image */
+  height: 50px;
 }

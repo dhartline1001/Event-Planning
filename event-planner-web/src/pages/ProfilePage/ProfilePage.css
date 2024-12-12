@@ -1,5 +1,51 @@
 .profile-page {
-    padding: 20px;
-    text-align: center;
-  }
-  
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 20px;
+}
+
+.profile-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.profile-picture {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #f6620d;
+  margin-bottom: 10px;
+}
+
+.profile-bio {
+  margin: 20px 0;
+}
+
+.profile-bio h2 {
+  font-size: 20px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.profile-bio p {
+  font-size: 16px;
+  color: #555;
+}
+
+.edit-profile-btn {
+  background-color: #f6620d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.edit-profile-btn:hover {
+  background-color: #e0550c;
+}
