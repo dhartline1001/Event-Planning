@@ -5,7 +5,7 @@ const cors = require("cors");
 require("dotenv").config();
 
 const app = express();
-app.use(express.json());
+app.use(express.json({ limit: "10mb" })); // Set the limit to 10MB
 app.use(cors());
 
 // MongoDB Connection
