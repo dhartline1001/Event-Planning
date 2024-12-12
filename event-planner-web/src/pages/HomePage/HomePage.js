@@ -14,7 +14,7 @@ const HomePage = () => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/events");
+        const response = await axios.get(process.env.REACT_APP_BACKEND_URL + "/api/events");
         setEvents(response.data.events);
         setFilteredEvents(response.data.events); // Initially set filtered events to all events
       } catch (error) {
