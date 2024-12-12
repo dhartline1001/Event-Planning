@@ -27,7 +27,7 @@ const EventPreviewPage = () => {
 
         // If user is authenticated, fetch ticket count for this event
         if (token) {
-          const ticketsResponse = await axios.get(process.env.REACT_APP_BACKEND_URL + `api/tickets/${eventId}`, {
+          const ticketsResponse = await axios.get(process.env.REACT_APP_BACKEND_URL + `/api/tickets/${eventId}`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
